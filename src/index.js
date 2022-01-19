@@ -631,6 +631,25 @@ export default class Gantt {
         parent_element.scrollLeft = scroll_pos;
     }
 
+    scroll_to_date(date_str) {
+        const parent_element = this.$svg.parentElement;
+        if (!parent_element) return;
+
+        const hours_before_date = date_utils.diff(
+            new Date(date_str),
+            this.gantt_start,
+            'hour'
+        );
+
+        const scroll_pos =
+            hours_before_date /
+                this.options.step *
+                this.options.column_width -
+            this.options.column_width;
+
+        parent_element.scrollLeft = scroll_pos;
+    }
+
     bind_grid_click() {
         $.on(
             this.$svg,
