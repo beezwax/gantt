@@ -1291,6 +1291,7 @@ var Gantt = (function () {
         bind_events() {
             this.bind_grid_click();
             this.bind_bar_events();
+            this.bind_scroll_events();
         }
 
         render() {
@@ -1307,7 +1308,7 @@ var Gantt = (function () {
 
         setup_layers() {
             this.layers = {};
-            const layers = ['grid', 'date', 'arrow', 'progress', 'bar', 'details'];
+            const layers = ['grid', 'arrow', 'progress', 'bar', 'details', 'date'];
             // make group layers
             for (let layer of layers) {
                 this.layers[layer] = createSVG('g', {
@@ -1320,7 +1321,6 @@ var Gantt = (function () {
         make_grid() {
             this.make_grid_background();
             this.make_grid_rows();
-            this.make_grid_header();
             this.make_grid_ticks();
             this.make_grid_highlights();
         }
@@ -1378,19 +1378,6 @@ var Gantt = (function () {
 
                 row_y += this.options.bar_height + this.options.padding;
             }
-        }
-
-        make_grid_header() {
-            const header_width = this.dates.length * this.options.column_width;
-            const header_height = this.options.header_height + 10;
-            createSVG('rect', {
-                x: 0,
-                y: 0,
-                width: header_width,
-                height: header_height,
-                class: 'grid-header',
-                append_to: this.layers.grid
-            });
         }
 
         make_grid_ticks() {
@@ -1463,7 +1450,22 @@ var Gantt = (function () {
             }
         }
 
+
+        make_dates_header() {
+            const header_width = this.dates.length * this.options.column_width;
+            const header_height = this.options.header_height + 10;
+            createSVG('rect', {
+                x: 0,
+                y: 0,
+                width: header_width,
+                height: header_height,
+                class: 'grid-header',
+                append_to: this.layers.date
+            });
+        }
+
         make_dates() {
+            this.make_dates_header();
             for (let date of this.get_dates_to_draw()) {
                 createSVG('text', {
                     x: date.lower_x,
@@ -1684,6 +1686,12 @@ var Gantt = (function () {
                     this.hide_popup();
                 }
             );
+        }
+
+        bind_scroll_events() {
+          $.on(this.$container, 'scroll', e => {
+            this.layers.date.setAttribute('transform', 'translate(0,'+ e.currentTarget.scrollTop +')');
+          });
         }
 
         bind_bar_events() {
