@@ -1,3 +1,11 @@
+## Forked and modified for Storytellers
+
+For insertion into FM, copy latest JS and CSS from:
+- dist/frappe-gantt.css
+- dist/frappe-gantt.min.js
+
+## Original README
+
 <div align="center">
     <img src="https://github.com/frappe/design/blob/master/logos/logo-2019/frappe-gantt-logo.png" height="128">
     <h2>Frappe Gantt</h2>
