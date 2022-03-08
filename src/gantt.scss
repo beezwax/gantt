@@ -130,6 +130,8 @@ body {
    dominant-baseline: mathematical;
    text-anchor: middle;
    font-weight: 700;
+   -webkit-user-select: none;
+   pointer-events: none;
  }
 .gantt .bar-label.big {
    fill: #555;
